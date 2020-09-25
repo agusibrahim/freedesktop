@@ -9,6 +9,11 @@ It's using [Github Action](https://github.com/features/actions), the awesome CI/
 
 ## Get started
 First, [Click here](https://github.com/agusibrahim/freedesktop/generate) or click the green button "Use this template" to clone this template to your repository, rename whatever you want.
-Make sure this repo is yours.
-
+Make sure this repo is yours. 
 Login to your Ngrok account or [Sign up here](https://dashboard.ngrok.com/signup). Goto [Setup page](https://dashboard.ngrok.com/get-started/setup) and copy your random Auth token something like `1hdFJgQC6ihak1ESbpx1t1R4356_2JLmorDVGYbBixWv7Xftm`
+
+Edit file `/.github/workflows/linux.yaml` or `/.github/workflows/windows.yaml` and replace `YOUR-NGROK-TOKEN-HERE` with your Ngrok authtoken, you can also change Desktop password here.
+Last step, run the github workflow as shown below
+
+![Tutorial](https://raw.githubusercontent.com/agusibrahim/freedesktop/master/freedesktop-demo.gif)
+
