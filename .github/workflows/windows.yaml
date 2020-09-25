@@ -1,0 +1,40 @@
+name: windows
+on: 
+  workflow_dispatch:
+defaults:
+  run:
+    shell: powershell
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      NGROK_TOKEN: YOUR-NGROK-TOKEN-HERE
+      RDP_PASSWORD: Secret123
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up RDP
+      run: |
+        Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
+        Expand-Archive -Path ngrok.zip -DestinationPath C:\Desktop\
+        C:\Desktop\ngrok.exe authtoken $Env:NGROK_TOKEN
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+        Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 0
+        Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText $Env:RDP_PASSWORD -Force)
+        
+    - name: Creating Tunnel
+      run: |
+        (New-Object -ComObject shell.application).toggleDesktop()
+        Remove-Item artifact/out.md
+        Start-Job { & C:\Desktop\ngrok.exe tcp 3389 }
+        Start-Sleep 6
+        $url=(Invoke-RestMethod -Uri "http://localhost:4040/api/tunnels").tunnels.public_url.Substring(6)
+        while(1) { echo "`n---------------`nRDP: $($url)`nUSERNAME: runneradmin`nPASSWORD: $($Env:RDP_PASSWORD)"; start-sleep 5 }
+    - uses: actions/upload-artifact@v2
+      if: ${{ always() }}
+      with:
+        name: MyArtifact
+        path: |
+          artifact/
+          !artifact/PUT_ARTIFACT_HERE
+        if-no-files-found: ignore
