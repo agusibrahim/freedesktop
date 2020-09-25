@@ -34,5 +34,5 @@ jobs:
         name: MyArtifact
         path: |
           artifact/
-          !artifact/out.md
+          !artifact/PUT_ARTIFACT_HERE
         if-no-files-found: ignore
