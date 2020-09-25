@@ -1,0 +1,38 @@
+name: linux gui2
+on: 
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NGROK_TOKEN: YOUR-NGROK-TOKEN-HERE
+      PASSWORD: Secret123
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up RDP and SSH
+      run: |
+        sudo snap install ngrok
+        sudo apt install xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils xrdp
+        sudo adduser xrdp ssl-cert
+        sudo systemctl restart xrdp
+        echo "runner:$PASSWORD" | sudo chpasswd
+        printf "authtoken: $NGROK_TOKEN\nregion: ap\n\ntunnels:\n  ssh:\n    proto: tcp\n    addr: 22\n  rdp:\n    proto: tcp\n    addr: 3389">>myconfig.yml
+        ngrok start --config=myconfig.yml --all > /dev/null &
+        sleep 2
+        resx="";while [ "$resx" != "2" ]; do resx=$(curl -s localhost:4040/api/tunnels|jq '.tunnels| length'); done
+        res=$(curl -s localhost:4040/api/tunnels)
+        sshurl=$(echo $res|jq -r ".tunnels[] | select(.name==\"ssh\").public_url"|cut -c7-)
+        rdpurl=$(echo $res|jq -r ".tunnels[] | select(.name==\"rdp\").public_url"|cut -c7-)
+        while sleep 5; do printf "\n---------------\nSSH: $sshurl\nRDP: $rdpurl\nUSERNAME: runner\nPASSWORD: $PASSWORD"; done
+        continue-on-error: true
+    - uses: actions/upload-artifact@v2
+      if: ${{ always() }}
+      with:
+        name: MyArtifact
+        path: |
+          artifact/
+          !artifact/out.md
+        if-no-files-found: ignore
