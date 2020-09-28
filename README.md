@@ -20,6 +20,9 @@ Last step, run the github workflow as shown below
 
 ![Tutorial](https://raw.githubusercontent.com/agusibrahim/freedesktop/master/freedesktop-demo.gif)
 
+## Close the Desktop
+Your desktop can run for up to 6 hours, if your work is done you can stop it. To stop the session, click red button "Cancel workflow". Shutting down the desktop *Won't stop* the workflow runner.
+
 ## Limitation
 - You'll able to use this desktop max 6 hour, starting since you're clicking "Run workflow". Make sure your repo set to public otherwise you have strict monthly limit.
 
