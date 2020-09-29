@@ -25,7 +25,6 @@ jobs:
     - name: Creating Tunnel
       run: |
         (New-Object -ComObject shell.application).toggleDesktop()
-        Remove-Item artifact/out.md
         Start-Job { & C:\Desktop\ngrok.exe tcp 3389 }
         Start-Sleep 6
         $url=(Invoke-RestMethod -Uri "http://localhost:4040/api/tunnels").tunnels.public_url.Substring(6)
