@@ -10,7 +10,7 @@ Windows             |  Linux (Ubuntu)
 ## How it's Work?
 It's using [Github Action](https://github.com/features/actions), the awesome CI/CD feature from Github. Combined with [Ngrok](https://ngrok.com) so that it can be accessed by public. Basically it just Enable RDP on Windows/Linux and install GUI on Linux then reverse connection with Ngrok.
 
-## Get started
+## Getting started
 First, [Click here](https://github.com/agusibrahim/freedesktop/generate) or click the green button "Use this template" to clone this template to your repository, rename whatever you want.
 Make sure this repo is yours. 
 Login to your Ngrok account or [Sign up here](https://dashboard.ngrok.com/signup). Goto [Setup page](https://dashboard.ngrok.com/get-started/setup) and copy your random Auth token something like `1hdFJgQC6ihak1ESbpx1t1R4356_2JLmorDVGYbBixWv7Xftm`
@@ -20,7 +20,7 @@ Last step, run the github workflow as shown below
 
 ![Tutorial](https://raw.githubusercontent.com/agusibrahim/freedesktop/master/freedesktop-demo.gif)
 
-## Close the Desktop
+## Stop the Desktop
 Your desktop can run for up to 6 hours, if your work is done you can stop it. To stop the session, click red button "Cancel workflow". Shutting down the desktop *Won't stop* the workflow runner.
 
 ## Limitation
